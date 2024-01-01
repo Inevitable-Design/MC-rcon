@@ -1,0 +1,58 @@
+version: "3.8"
+# Other docker-compose examples in /examples
+
+services:
+
+  minecraft:
+    image: itzg/minecraft-server
+    ports:
+      - "25565:25565"
+      - "28016:28016"
+      - "3306:3306"
+    volumes:
+      - "mc:/data"
+    environment:
+      MEMORY: "4G"
+      # OPS: |
+      #   OtakuTrashLord7
+      VERSION: "1.20.1"
+
+      # ONLINE_MODE: "FALSE"
+      BROADCAST_RCON_TO_OPS: "TRUE"
+      EULA: "TRUE"
+      OP: "OtakuTrashLord7"
+      CRACKED: "TRUE"
+      ENABLE_RCON: "true"
+      RCON_PASSWORD: "testing"
+      RCON_PORT: 28016
+      # enable env variable replacement
+      REPLACE_ENV_VARIABLES: "TRUE"
+      # define an optional prefix for your env variables you want to replace
+      ENV_VARIABLE_PREFIX: "CFG_"
+      # and here are the actual variables
+      CFG_DB_HOST: "http://localhost:3306"
+      CFG_DB_NAME: "minecraft"
+      CFG_DB_PASSWORD_FILE: "/run/secrets/db_password"
+  # web:
+  #   image: itzg/rcon
+  #   environment:
+  #     RWA_USERNAME: admin
+  #     RWA_PASSWORD: admin
+  #     RWA_ADMIN: "TRUE"
+  #     # is referring to the hostname of 'mc' compose service below
+  #     RWA_RCON_HOST: "localhost"
+  #     RWA_RCON_PORT: 28016
+  #     RWA_WEB_RCON: "TRUE"
+  #     # needs to match the RCON_PASSWORD configured for the container
+  #     RWA_RCON_PASSWORD: "testing"
+  #   ports:
+  #     - "4326:4326"
+  #     - "4327:4327"
+
+volumes:
+  mc:
+  rcon:
+
+    # secrets:
+    #   db_password:
+    #     file: ./db_password
